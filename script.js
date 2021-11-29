@@ -14,51 +14,67 @@
             //     `; })
             //     document.getElementById('output').innerHTML =output} )
    //---------------------------------------------------------------------------------
+//    async function getData(){
+//     try {
+//         const response=await fetch("FishEyeData.json");
+//         const data=await response.json(); 
+//         console.log( data)
+        
+//     } catch (error) {
+//         // console.log("l'erreure est: "+'{*** '+ error.message +'*** }');
+//         console.log( `l'erreure est: ***--- ${error.message}---*** } `);
+//     }
 
-    fetch("pphotographers.json")
+// }
+
+
+
+    fetch("FishEyeData.json")
 
     .then((res) => {
         return res.json(); })
 
     .then((data) => {
-      // console.log( data)
-      
-      data.forEach(function(pphotographer){
+       console.log( data)
+      const photographer=data.photographers;
+      console.log(photographer)
+      photographer.forEach(function(photographer){
 
-           //créer un tableau avec tout les tags des photograaphes
-        let arrayTags = pphotographer.tags;
-        // console.log(arrayTags);
+           //créer un tableau avec tout les tags des photographes
+        let arrayTags = photographer.tags;
+         console.log(arrayTags);
         //placer des tags dans des balises
         let tag = arrayTags.map(
                   (tag) => `<li class='tags' arial-label='tag${tag}'> #${tag} </li>`
                 );
+               
         //   //placer les balises<li> dans une balise <ul> avec la méthode join()
-        let tags = `<ul class='tag-list'>${tag.join("")} </ul>`;  
+        let tags = `<ul class='tag-list'>${tag.join("")} </ul>`;   
         // // créer les balises <article> qui contient les informations de chaque photographe et les insérer dans la balise <main>
         // let mainContainer = document.querySelector(".main-container");
         let output =``;
 
                 output = `
         <article class='container-profile'>
-          <a href='./photographer-page-profile'?id=${pphotographer.id} >
+          <a href='./photographer-page-profile'?id=${photographer.id} >
             <figure>
               <img class='container-profil__picture'
-                  src='../${pphotographer.portrait}'
-                  alt='${pphotographer.name} '
+                  src='../${photographer.portrait}'
+                  alt='${photographer.name} '
               >
             </figure>
-            <h2>${pphotographer.name} </h2>
+            <h2>${photographer.name} </h2>
           </a>  
 
             <div class='container-profile__information'>
-            <h3 class='location'>${pphotographer.city}, ${pphotographer.country} </h3> 
-            <h4 class='quote'>${pphotographer.tagline}</h4>
-            <h5 class='price'>${pphotographer.price} € </h5>
+            <h3 class='location'>${photographer.city}, ${photographer.country} </h3> 
+            <h4 class='quote'>${photographer.tagline}</h4>
+            <h5 class='price'>${photographer.price} € </h5>
             ${tags}
             </div>      
         
         </article>
-      `;
+      `; 
    
      document.querySelector('.main_container').innerHTML +=output;
     })
@@ -92,7 +108,8 @@
       window.addEventListener("click", ()=>{
         // e.preventDefault();
         let main=document.querySelector("#main")
-        main.scrollIntoView({behavior:'smooth',block:"start"})
+        // main.scrollIntoView({behavior:'smooth',block:"start"})
+        window.scrollTo({ top:0,behavior:'smooth' })
       });
 
     //   const scrollToMainContent = (e) => {
@@ -105,6 +122,102 @@
 
     //   scroll_btn.addEventListener("click", scrollToMainContent);
     // };
+    //--------------------21/11/2021---------------------------------------------
+    let filterTags=()=>{
+        //   let tagNav = [...document.querySelectorAll('ul a')];
+        let tagNav= document.querySelector(".tags_container").children 
+        console.log(tagNav)
+        //  let tagArticle =  [ ...document.querySelectorAll(".container-profile"), ];      
+        let tagArticles  =document.querySelectorAll("article") 
+        console.log(tagArticles);
+
+    //     let hideArticle=()=>{
+    //       for(let tagArticle of this.tagArticles) {
+    //           tagArticle.style.display = "none";
+    //       }
+    //   }
+    //   let showArticle=()=>{
+    //     for(let tagArticle of this.tagArticles) {
+    //         tagArticle.style.display = "flex";
+    //     }
+    // }
+      
+
+        for(let i = 0; i < tagNav.length; i++){
+          tagNav[i].addEventListener('click', function(){
+          console.log(this.innerHTML);
+          //cliquer sur les filtre kid ou female ou... et voir rsultat sur "console"
+      
+              for(let j = 0; j< tagNav.length; j++){
+                  tagNav[j].classList.remove('active');
+              }
+      
+              this.classList.add('active'); //this corresponds au filtre" cliqué"
+         //aller sur "inspecter"puis "Element" chaque clic sur les filtre en haut ajoite une classa ce filtre meme
+      
+        //  let targetData = this.getAttribute('data-target');
+         let targetData = this.textContent;
+         console.log(targetData);
+         
+         for(let k = 0; k < tagArticles.length; k++){
+          // tagArticles[k].style.display="flex";
+          tagArticles[k].style.display="none";
+          // if(tagArticles[k].getAttribute('data-item') == targetData || targetData == "all"){
+          // if(tagArticles[k].textContent == targetData || targetData == "all"){
+            if(tagArticles[k].textContent.includes(targetData) ){
+              // tagArticles[k].style.display="none";
+              tagArticles[k].style.display="block";
+          }
+      }
+
+      //    for(let k = 0; k < tagArticles.length; k++){
+      //     tagArticles[k].classList.remove('active');
+      //     tagArticles[k].classList.add('delete');
+
+      //     if(tagArticles[k].getAttribute('data-item') == targetData || targetData == "all"){
+      //         tagArticles[k].classList.remove('delete');
+      //         tagArticles[k].classList.add('active');
+      //     }
+      // }
+       });
+      
+       
+     
+      }
+      
+
+    }
+    //1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+
+    // class tag{
+//   constructor(par1,par2){
+//     // this.tag=tagNav
+//     this.tagNav = [...document.querySelectorAll('ul a')];
+//     //recuperer tout les tags des photographs
+     
+//     this.tagArticle =  [ ...document.querySelectorAll(".container-profile"), ]; 
+//      detelePhotographerArticle()
+//      modeActiveTag()
+//      modeDisplayPhotographer()
+
+
+//   }
+//   detelePhotographerArticle(){
+
+//   }
+//   modeActiveTag(){
+
+//   }
+//   modeDisplayPhotographer(){
+
+//   }
+// }
+// console.log(this.tagNav)
+// //ecouter mentorat enregistré
+
+
+
+    
         
     //*************************************************************** */
       //filtrer les tags
@@ -144,63 +257,63 @@
       //   element.className = arr1.join(" ");
       // }
 
-      // // Add active class to the current button (highlight it)
+      // // Add active class to the active button (highlight it)
       // var btnContainer = document.getElementById("tags_container");
       // var btns = btnContainer.getElementsByClassName("tags_nav");
       // for (var i = 0; i < btns.length; i++) {
       //   btns[i].addEventListener("click", function(){
-      //     var current = document.getElementsByClassName("active");
-      //     current[0].className = current[0].className.replace(" active", "");
+      //     var active = document.getElementsByClassName("active");
+      //     active[0].className = active[0].className.replace(" active", "");
       //     this.className += " active";
       //   });
       // }
 
  //*************************************************************** */
-     //filter tag 2ème essaie
-     let filterTags=()=>{
-      let tagNav = [...document.querySelectorAll('ul a')];
-      //recuperer tout les tags des photographs
+    //  //filter tag 2ème essaie
+    //  let filterTags=()=>{
+    //   let tagNav = [...document.querySelectorAll('ul a')];
+    //   //recuperer tout les tags des photographs
      
-     let tagArticle =  [ ...document.querySelectorAll(".container-profile"), ];      
+    //  let tagArticle =  [ ...document.querySelectorAll(".container-profile"), ];      
     
-     // let tagArticle =document.querySelectorAll(".container-profile");
-     console.log(tagNav);
-     console.log(tagArticle); 
-     for(let i = 0; i < tagNav.length; i++){
-       let tagChosen=tagNav[i];
-       let tagName=tagChosen.innerHTML;
-       selectByTagName(tagName, tagChosen,tagArticle, tagNav);
-     }    
+    //  // let tagArticle =document.querySelectorAll(".container-profile");
+    //  console.log(tagNav);
+    //  console.log(tagArticle); 
+    //  for(let i = 0; i < tagNav.length; i++){
+    //    let tagChosen=tagNav[i];
+    //    let tagName=tagChosen.innerHTML;
+    //    selectByTagName(tagName, tagChosen,tagArticle, tagNav);
+    //  }    
      
-    };
-    const selectByTagName = (tagName, tagChosen,tagArticle, tagNav) =>{
+    // };
+    // const selectByTagName = (tagName, tagChosen,tagArticle, tagNav) =>{
 
-        let everyTagPhotographer = document.querySelectorAll(".container-profile .tags");
-        console.log(everyTagPhotographer);
-        console.log(tagNav);
+    //     let everyTagPhotographer = document.querySelectorAll(".container-profile .tags");
+    //     console.log(everyTagPhotographer);
+    //     console.log(tagNav);
 
         
-    if(tagChosen.innerHTML.includes(tagName)){
-      tagName = tagName.toLowerCase();
-    const showTags=(e)=>{
-          tagNav.forEach((tag)=>{
-            if(tag.classList[2]=='active'){
-              tag.classList.remove('active');
+    // if(tagChosen.innerHTML.includes(tagName)){
+    //   tagName = tagName.toLowerCase();
+    // const showTags=(e)=>{
+    //       tagNav.forEach((tag)=>{
+    //         if(tag.classList[2]=='active'){
+    //           tag.classList.remove('active');
 
-            };
-          });
+    //         };
+    //       });
 
-          if (!e.target.classList[2]) {
-            e.target.classList.add("active");
-            tagArticle.forEach((profile) => {
-              profile.style.display = "none";
+    //       if (!e.target.classList[2]) {
+    //         e.target.classList.add("active");
+    //         tagArticle.forEach((profile) => {
+    //           profile.style.display = "none";
     
-              if (profile.innerHTML.includes(tagName)) {
-                profile.style.display = "block";
-              }
-            });
-          }
-    };
+    //           if (profile.innerHTML.includes(tagName)) {
+    //             profile.style.display = "block";
+    //           }
+    //         });
+    //       }
+    // };
 
         //5555555555555555555555555555555555555555555555555555555
         // const filterTagsAbleAndDisable = (e) => {
@@ -237,16 +350,16 @@
 
 
 
-      tagChosen.addEventListener('click', (e)=>{
-        if(e.target.innerHTML==="#all"){
-          everyTagPhotographer.forEach((profile)=>{
-            profile.style.display="display";
-          });
-        }
+    //   tagChosen.addEventListener('click', (e)=>{
+    //     if(e.target.innerHTML==="#all"){
+    //       everyTagPhotographer.forEach((profile)=>{
+    //         profile.style.display="display";
+    //       });
+    //     }
 
-      });
-        }
-    }
+    //   });
+    //     }
+    // }
 
 
 
@@ -642,3 +755,4 @@
   
 //   export { addPhotographerCard, addPhotographerLabel };
   
+
