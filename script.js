@@ -59,7 +59,7 @@
           <a href='./photographer-page-profile'?id=${photographer.id} >
             <figure>
               <img class='container-profil__picture'
-                  src='../${photographer.portrait}'
+                  src='${photographer.portrait}'
                   alt='${photographer.name} '
               >
             </figure>
